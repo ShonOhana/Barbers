@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/deck"
+    tools:context="queuesTestFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/blue"
+        android:alpha="0.15">
+
+    </FrameLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/sunday_btn_1600"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/queue_btn"
+                android:text="16:00"
+                app:layout_constraintEnd_toStartOf="@+id/guideline11"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hour_Choose" />
+
+            <Button
+                android:id="@+id/sunday_btn_1630"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="16:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1600"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1600"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1600" />
+
+            <Button
+                android:id="@+id/sunday_btn_1700"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="17:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1630"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1630"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1630" />
+
+            <Button
+                android:id="@+id/sunday_btn_1730"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="17:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1700"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1700"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1700" />
+
+            <Button
+                android:id="@+id/sunday_btn_1800"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="18:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1730"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1730"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1730" />
+
+            <Button
+                android:id="@+id/sunday_btn_1830"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="18:30"
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1800"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1800"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1800" />
+
+            <Button
+                android:id="@+id/sunday_btn_1900"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="19:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1830"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1830"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1830" />
+
+            <Button
+                android:id="@+id/sunday_btn_1930"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="19:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1900"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1900"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1900" />
+
+            <Button
+                android:id="@+id/sunday_btn_2000"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="20:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1930"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1930"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1930" />
+
+            <Button
+                android:id="@+id/sunday_btn_700"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/queue_btn"
+                android:text="07:00"
+                android:textOff="07:00"
+                android:textOn="07:00"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline9"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hour_Choose" />
+
+            <Button
+                android:id="@+id/sunday_btn_730"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="07:30"
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_700"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_700"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_700" />
+
+            <Button
+                android:id="@+id/sunday_btn_800"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="08:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_730"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_730"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_730" />
+
+            <Button
+                android:id="@+id/sunday_btn_830"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+
+                android:text="08:30"
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_800"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_800"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_800" />
+
+            <Button
+                android:id="@+id/sunday_btn_900"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="09:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_830"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_830"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_830" />
+
+            <Button
+                android:id="@+id/sunday_btn_930"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="09:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_900"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_900"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_900" />
+
+            <Button
+                android:id="@+id/sunday_btn_1000"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="10:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_930"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_930"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_930" />
+
+            <Button
+                android:id="@+id/sunday_btn_1030"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="10:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1000"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1000"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1000" />
+
+            <Button
+                android:id="@+id/sunday_btn_1100"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="11:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1030"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1030"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1030" />
+
+            <Button
+                android:id="@+id/sunday_btn_1130"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/queue_btn"
+                android:text="11:30"
+                app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline11"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hour_Choose" />
+
+            <Button
+                android:id="@+id/sunday_btn_1200"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="12:00"
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1130"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1130"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1130" />
+
+            <Button
+                android:id="@+id/sunday_btn_1230"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="12:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1200"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1200"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1200" />
+
+            <Button
+                android:id="@+id/sunday_btn_1300"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="13:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1230"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1230"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1230" />
+
+            <Button
+                android:id="@+id/sunday_btn_1330"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="13:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1300"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1300"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1300" />
+
+            <Button
+                android:id="@+id/sunday_btn_1400"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="14:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1330"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1330"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1330" />
+
+            <Button
+                android:id="@+id/sunday_btn_1430"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="14:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1400"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1400"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1400" />
+
+            <Button
+                android:id="@+id/sunday_btn_1500"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="15:00"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1430"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1430"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1430" />
+
+            <Button
+                android:id="@+id/sunday_btn_1530"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/queue_btn"
+                android:text="15:30"
+
+                app:layout_constraintEnd_toEndOf="@+id/sunday_btn_1500"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/sunday_btn_1500"
+                app:layout_constraintTop_toBottomOf="@+id/sunday_btn_1500" />
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/queues_btn_clicked"
+                android:text="back"
+                android:textColor="#ffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.66" />
+
+            <TextView
+                android:id="@+id/tv_hour_Choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/aldrich"
+                android:text="please choose an available hour"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+
+            <TextView
+                android:id="@+id/date_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:textColor="#020202"
+                app:layout_constraintBottom_toTopOf="@+id/tv_hour_Choose"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

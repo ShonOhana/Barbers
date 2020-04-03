@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Barbers</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+
+    <string-array name="type">
+        <item>Barber</item>
+        <item>Client</item>
+    </string-array>
+    <string name="appwidget_text">Me Hair</string>
+    <string name="add_widget">Add widget</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_up_for_free">Sign Up For Free</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create">Create</string>
+    <string name="set">set</string>
+    <string name="update_details">Update details</string>
+    <string name="fullname">Fullname</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="barber_client">Barber/Client</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="back">back</string>
+    <string name="name_name">name name</string>
+    <string name="address">address</string>
+    <string name="description">description</string>
+    <string name="hours_of_work">hours of work</string>
+    <string name="edit_address">edit address</string>
+    <string name="edit_profile">edit profile</string>
+    <string name="enter_address">enter address</string>
+    <string name="hours_and_prices">hours and prices</string>
+    <string name="promote">promote</string>
+    <string name="search_barber_by_name">Search barber by name:</string>
+    <string name="my_gallery">My Gallery</string>
+    <string name="please_pick_a_date">Please pick a date</string>
+    <string name="barber">Barber</string>
+    <string name="client">Client</string>
+    <string name="title_home" translatable="false">title home</string>
+    <string name="address_include_your_city">address (include your city)</string>
+    <string name="gallery">gallery</string>
+    <string name="see_queues">see Queues</string>
+    <string name="edit_details">edit details</string>
+    <string name="write_your_description">Write your description</string>
+    <string name="press_to_see_description">press to see description</string>
+    <string name="our_gallery">Our Gallery</string>
+    <string name="barbershop_name">barbershop name</string>
+    <string name="schedule">schedule</string>
+    <string name="for_barbers_barber_shop_address">For barbers: Barber shop address</string>
+    <string name="logout">logout</string>
+    <string name="barber_shop_name">Barber shop name</string>
+    <string name="welcome">Welcome!</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="search">Search</string>
+    <string name="your_appointments">Your appointments</string>
+    <string name="wasnt_found_go_n_back_to_search_and_ty_again">wasnt found go   back to search and ty again</string>
+    <string name="back_to_search">back to search</string>
+    <string name="sign_up">Sign up</string>
+    <string name="happy">we\'ll be happy to see you</string>
+    <string name="located">\'s barbeshop located in</string>
+    <string name="logoutt">Are you sure you want to log out?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="changeDialog">Are yo sure you want to change your</string>
+    <string name="tooShort">Too short</string>
+    <string name="notValid">Not valid!</string>
+    <string name="phoneNumber">phone number</string>
+    <string name="length4">must contain at least 4 characters</string>
+    <string name="barberShopName">barber shop name</string>
+    <string name="length6">Must at least 6</string>
+    <string name="name">name</string>
+    <string name="phoneKey">phone</string>
+    <string name="emailKey">email</string>
+    <string name="addressKey">address</string>
+    <string name="barberShopKey">barberShop</string>
+    <string name="passwordKey">password</string>
+    <string name="wasChanged">was changed</string>
+    <string name="the">the</string>
+    <string name="barberDescription">please write description of your barber shop.   The description you enter will be displayed for the clients page.</string>
+    <string name="locatedIn">Our barber shop is located in</string>
+    <string name="happyToSee" translatable="false">and we will happy to see you</string>
+
+
+</resources>
