@@ -72,4 +72,22 @@
     <string name="wasChanged">שונה</string>
     <string name="barberDescription">"אנא תכתוב את התיאור של המספרה שלך. התאור שהזנת יוצא בדף הלקוחות. "</string>
     <string name="locatedIn">המספרה שלנו ממוקמת ב</string>
+    <string name="appointment_is_booked">התור נקבע</string>
+    <string name="appointment_occupid">תור תפוס</string>
+    <string name="appointment_ok">האם תרצה לקבוע תור?</string>
+    <string name="cancelll">האם אתה בטוח שברצונך לבטל את התור?</string>
+    <string name="delete">מחק</string>
+    <string name="dismiss">התעלם</string>
+    <string name="enter_shop_name">אנא הכנס שם מספרה</string>
+    <string name="error">שגיאה הופיעה</string>
+    <string name="ghost_mode">מספרות נוספות</string>
+    <string name="home">בית</string>
+    <string name="info">מידע</string>
+    <string name="more_then_day">אין אפשרות לקבוע יותר מתור אחד ביום, אנא בטל או תקבע ליום אחר</string>
+    <string name="pictures">תמונות</string>
+    <string name="please_choose_an_available_hour">אנא בחר שעה זמינה</string>
+    <string name="q_delete_photo">האם אתה בטוח שברצונך למחוק את התמונה?</string>
+    <string name="the_likers">לייקים</string>
+    <string name="press_likes">תעשו לייקים :)</string>
+    <string name="my_barbershop">המספרה שלי</string>
 </resources>

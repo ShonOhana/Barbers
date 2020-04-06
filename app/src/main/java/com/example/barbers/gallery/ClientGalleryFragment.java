@@ -1,4 +1,4 @@
-package com.example.barbers;
+package com.example.barbers.gallery;
 
 
 import android.app.AlertDialog;
@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.barbers.R;
+import com.example.barbers.convinience.FirebaseViewHolder;
 import com.example.barbers.java.Barber;
 import com.example.barbers.java.Client;
 import com.example.barbers.java.Image;
@@ -27,7 +32,6 @@ import com.example.barbers.java.Like;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,7 +43,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -53,29 +56,22 @@ import static android.app.Activity.RESULT_OK;
 public class ClientGalleryFragment extends Fragment {
 
 
+    private TextView tv_profile_name;
+    private TextView barber_address;
+    private ImageView ib_barber_profile_picture;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private ArrayList<Barber> barberArrayList;
     private FirebaseRecyclerOptions<Image> options;
     private FirebaseRecyclerAdapter<Image, FirebaseViewHolder> adapter;
-    private DatabaseReference reference;
-    private FirebaseUser fUser;
-    Button gallery;
+    private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private Bundle args;
-    private Query query;
-    private ImageView camera;
-    ImageView galleryItem;
-    ArrayList<Like> likers = new ArrayList<>();
-    ArrayList<Image> galleryImg = new ArrayList<>();
-    private StorageReference mStorageRef;
-            Button delete;
-    private Uri avatarUri;
+    private ArrayList<Like> likers = new ArrayList<>();
+    private ArrayList<Image> galleryImg = new ArrayList<>();
+    private Button delete;
+    private View sargel;
     private Uri currentImg;
-    private StorageTask mUploadTask;
     private StorageReference fileRef;
-    Query mainRef;
-    boolean isClient;
-    boolean isLiked;
-    String likersText = "";
+    private String likersText = "";
 
 
     private static int PICK_IMAGE_REQUEST = 3;
@@ -89,20 +85,41 @@ public class ClientGalleryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallerry, container, false);
 
+        /**find view's by id's*/
+        //local variables
+        DatabaseReference reference;
+        ImageView camera = view.findViewById(R.id.camera);
+        ImageView ivBack = view.findViewById(R.id.iv_back);
+        TextView tvBack = view.findViewById(R.id.tv_back);
+        Query query;
 
+        //class variables
         recyclerView = view.findViewById(R.id.recycle_for_gallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        barberArrayList = new ArrayList<>();
         fUser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference().child("users").child("barbers");
-        galleryItem = view.findViewById(R.id.iv_gallery_item);
-        camera = view.findViewById(R.id.camera);
+        sargel = view.findViewById(R.id.sargel);
+        swipeRefreshLayout = view.findViewById(R.id.swipe);
+        barber_address = view.findViewById(R.id.barber_address);
+        barber_address = view.findViewById(R.id.tv_barbershop);
+        ib_barber_profile_picture = view.findViewById(R.id.ib_barber_profile_picture);
+        tv_profile_name = view.findViewById(R.id.tv_profile_name);
+
+
+        /**setOnClickListeners*/
+        ivBack.setOnClickListener(b->{
+            Navigation.findNavController(view).navigate(R.id.action_clientGalleryFragment_to_costumerHomeFragment);
+        });
         camera.setOnClickListener(b -> openFileChooser());
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            (new Handler()).postDelayed(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+                adapter.notifyDataSetChanged();
+            }, 1000);
+        });
 
-
-        fUser = FirebaseAuth.getInstance().getCurrentUser();
-        System.out.println(fUser + "  this");
+        //navigate the gallery kind
         args = getArguments();
         if (args == null) {
             query = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(fUser.getUid()).child("gallery");
@@ -111,11 +128,11 @@ public class ClientGalleryFragment extends Fragment {
         } else {
             query = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(args.getString("BarberId")).child("gallery");
             reference = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(args.getString("BarberId")).child("gallery");
-            isClient = true;
+            ivBack.setVisibility(View.VISIBLE);
+            tvBack.setVisibility(View.VISIBLE);
             camera.setVisibility(View.INVISIBLE);
             getBarberGallery(reference);
         }
-
 
         reference.keepSynced(true);
         options = new FirebaseRecyclerOptions.Builder<Image>().setQuery(query, Image.class).build();
@@ -124,6 +141,7 @@ public class ClientGalleryFragment extends Fragment {
 
         return view;
     }
+
 
     private void openFileChooser() {
         PICK_IMAGE_REQUEST = 1;
@@ -140,14 +158,14 @@ public class ClientGalleryFragment extends Fragment {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE_REQUEST
                 && data != null && data.getData() != null) {
 
-            avatarUri = data.getData();
+            Uri avatarUri = data.getData();
 
 
-            mStorageRef = FirebaseStorage.getInstance().getReference("uploads").child("gallery");
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference("uploads").child("gallery");
             fileRef = mStorageRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(System.currentTimeMillis() + "." + getFileExtension(avatarUri));
-            mUploadTask = fileRef.putFile(avatarUri)
-                    .addOnSuccessListener((OnSuccessListener<UploadTask.TaskSnapshot>) taskSnapshot -> {
 
+            StorageTask mUploadTask = fileRef.putFile(avatarUri)
+                    .addOnSuccessListener(taskSnapshot -> {
 
                         String gallery_img = fileRef.getDownloadUrl().toString();
 
@@ -186,8 +204,6 @@ public class ClientGalleryFragment extends Fragment {
                                 }
                             });
 
-//                                Picasso.get().load(avatarUri).into(ib_barber_profile_picture);
-
 
                         })
 
@@ -199,7 +215,9 @@ public class ClientGalleryFragment extends Fragment {
 
 
     private void showError(Exception e) {
-        new AlertDialog.Builder(getContext()).setTitle("An Error Occurred").setMessage(e.getLocalizedMessage()).setPositiveButton("Dismiss", (dialog, which) -> {
+        new AlertDialog.Builder(getContext()).setTitle(getString(R.string.error))
+                .setMessage(e.getLocalizedMessage()).
+                setPositiveButton((getString(R.string.dismiss)), (dialog, which) -> {
         }).show();
     }
 
@@ -215,7 +233,7 @@ public class ClientGalleryFragment extends Fragment {
         return "";
     }
 
-    public void showGallery(DatabaseReference ref, FirebaseUser clientUser) {
+    private void showGallery(DatabaseReference ref, FirebaseUser clientUser) {
 
         DatabaseReference clientRef = FirebaseDatabase.getInstance().getReference().child("users").child("clients").child(clientUser.getUid());
 
@@ -231,9 +249,13 @@ public class ClientGalleryFragment extends Fragment {
                 delete = holder.itemView.findViewById(R.id.b_delete);
 
                 args = getArguments();
-                if (args.getString("BarberId") != null) delete.setVisibility(View.INVISIBLE);
+                if (args.getString("BarberId") != null) {
+                    delete.setVisibility(View.INVISIBLE);
+                    sargel.setVisibility(View.INVISIBLE);
 
-//                if (reference != null) {
+                }
+
+
 
 
                 int likes = thisImg.getLikes();
@@ -375,6 +397,5 @@ public class ClientGalleryFragment extends Fragment {
             }
         });
     }
-
 
 }

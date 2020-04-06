@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
  */
 public class DetailUpdate extends Fragment {
 
+    //properties
     private DatabaseReference ref;
     private Button btn_update_name;
     private EditText fname_update;
@@ -57,9 +58,9 @@ public class DetailUpdate extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.detail_update_fragment, container, false);
-        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-        ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(fUser.getUid());
-        System.out.println(fUser.getUid() + "  user id");
+
+        /**find view's by id's*/
+        //class variables
         btn_update_name = v.findViewById(R.id.btn_update_name);
         fname_update = v.findViewById(R.id.fname_update);
         btn_update_phone = v.findViewById(R.id.btn_update_phone);
@@ -73,52 +74,57 @@ public class DetailUpdate extends Fragment {
         btn_update_pass = v.findViewById(R.id.btn_update_password);
         pass_update = v.findViewById(R.id.pswrd);
 
+        //local variables
+        Button back = v.findViewById(R.id.back_to_Barber);
 
+        //FireBase relationship
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(fUser.getUid());
+
+        /**setOnClickListeners*/
         btn_update_name.setOnClickListener(b -> {
             String fullName = fname_update.getText().toString();
             if (fullName.length() < 4) fname_update.setError(getString(R.string.tooShort));
-            else updateDetail(fUser,btn_update_name);
+            else dialogAlet(fUser,btn_update_name,getString(R.string.name));
         });
         btn_update_phone.setOnClickListener(b -> {
             String phone = phone_update.getText().toString();
             Pattern phonePattern = Patterns.PHONE;
             boolean validPhone = phonePattern.matcher(phone).matches();
             if (!validPhone) phone_update.setError(getString(R.string.notValid));
-            else updateDetail(fUser,btn_update_phone);
+            else dialogAlet(fUser,btn_update_phone,getString(R.string.phoneKey));
         });
         btn_update_mail.setOnClickListener(b -> {
             String email = mail_update.getText().toString();
             Pattern emailAddressPattern = Patterns.EMAIL_ADDRESS;
             boolean validEmail = emailAddressPattern.matcher(email).matches();
             if (!validEmail) mail_update.setError(getString(R.string.notValid));
-            else updateDetail(fUser,btn_update_mail);
+            else dialogAlet(fUser,btn_update_mail,getString(R.string.emailKey));
         });
         btn_update_type.setOnClickListener(b -> {
             String userAddress = address_update.getText().toString();
             if (userAddress.length() < 4)
                 address_update.setError(R.string.notValid + getString(R.string.length4));
-            else updateDetail(fUser,btn_update_type);
+            else dialogAlet(fUser,btn_update_type,getString(R.string.addressKey));
         });
         btn_update_barbershop.setOnClickListener(b -> {
-
-            updateDetail(fUser,btn_update_barbershop);
+            dialogAlet(fUser,btn_update_barbershop,getString(R.string.barberShopKey));
         });
         btn_update_pass.setOnClickListener(b -> {
             String pass = pass_update.getText().toString();
             if (pass.length() < 6) pass_update.setError(getString(R.string.length6));
-            else updateDetail(fUser,btn_update_pass);
+            else dialogAlet(fUser,btn_update_pass,getString(R.string.passwordKey));
         });
 
-
-        v.findViewById(R.id.back_to_Barber).setOnClickListener(b -> {
+        back.setOnClickListener(b -> {
             NavController nv = Navigation.findNavController(v);
             nv.navigate(R.id.action_detailUpdate_to_barberHomeFragment);
         });
 
-
         return v;
     }
 
+    /**created methods*/
     private void updateDetail(FirebaseUser fUser, Button b) {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -147,7 +153,7 @@ public class DetailUpdate extends Fragment {
                         break;
                     case "address":
                         assert brb != null;
-                        brb.setAddress(phone_update.getText().toString());
+                        brb.setAddress(address_update.getText().toString());
                         ref.setValue(brb);
                         Toast.makeText(getContext(), getString(R.string.the) + getString(R.string.addressKey) + " " + getString(R.string.wasChanged), Toast.LENGTH_SHORT).show();
                         break;
@@ -175,10 +181,12 @@ public class DetailUpdate extends Fragment {
         });
 
     }
-
     private void dialogAlet(FirebaseUser fUser, Button b, String set) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.changeDialog) + " " + set + "?").setPositiveButton(R.string.yes, (dialog, which) -> updateDetail(fUser, b)).setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss());
+        builder.setTitle(getString(R.string.changeDialog) + " " + set + "?").
+                setPositiveButton(R.string.yes, (dialog, which) -> updateDetail(fUser, b))
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss());
         builder.show();
     }
+
 }

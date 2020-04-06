@@ -9,15 +9,15 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.barbers.Constants;
+import com.example.barbers.queues.Constants;
 import com.example.barbers.MainActivity;
 import com.example.barbers.R;
 import com.example.barbers.java.Barber;
@@ -45,29 +45,14 @@ public class SignUp extends Fragment  {
     private EditText etMail;
     private EditText etPass;
     private EditText etAdress;
-    private EditText etType;
+    private Spinner etType;
     private EditText etFullName;
     private EditText etPhone;
+    private ProgressDialog progressDialog;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayList<Image> galleryImagesArr = new ArrayList<>();
-
-    OnSuccessListener<AuthResult> mSuccessListener = new OnSuccessListener<AuthResult>() {
-        @Override
-        public void onSuccess(AuthResult authResult) {
-            if (progressDialog.isShowing()){
-                progressDialog.dismiss();
-            }
-
-            //go to main activity
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
-            if (getActivity() != null) getActivity().finish();
-
-        }
-    };
-
-
-    OnSuccessListener<AuthResult> registerListener = new OnSuccessListener<AuthResult>() {
+    //properties for the class build methods
+    private OnSuccessListener<AuthResult> registerListener = new OnSuccessListener<AuthResult>() {
         @Override
         public void onSuccess(AuthResult authResult) {
             if (progressDialog.isShowing()){
@@ -82,8 +67,7 @@ public class SignUp extends Fragment  {
 
         }
     };
-
-    OnFailureListener mFailureListener = new OnFailureListener() {
+    private OnFailureListener mFailureListener = new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
             if (progressDialog.isShowing()){
@@ -93,7 +77,7 @@ public class SignUp extends Fragment  {
         }
     };
 
-
+    //empty constructor
     public SignUp() {
         // Required empty public constructor
     }
@@ -101,12 +85,14 @@ public class SignUp extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        View v = inflater.inflate(R.layout.activity_signup, container, false);
         View v = inflater.inflate(R.layout.activity_signup, container, false);
 
-        arrayList.add("queues");
-        galleryImagesArr.add(new Image("",0,new ArrayList<Like>()));
+        /**find view's by id's*/
+        //local variables
         TextView btnCreate = v.findViewById(R.id.btn_sign_up);
+        TextView sBack = v.findViewById(R.id.go_to_sin);
+
+        //class variables
         etMail = v.findViewById(R.id.mail);
         etPass = v.findViewById(R.id.pswrd);
         etAdress = v.findViewById(R.id.address);
@@ -114,30 +100,27 @@ public class SignUp extends Fragment  {
         etFullName = v.findViewById(R.id.fname);
         etPhone = v.findViewById(R.id.phone);
 
+        //initial for the register
+        arrayList.add("queues");
+        galleryImagesArr.add(new Image("",0,new ArrayList<Like>()));
+        //Spinner
+        String[] items = new String[]{getString(R.string.barber), getString(R.string.client)};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
+        etType.setAdapter(adapter);
 
-
-
-//        fm = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-
-
-
-
+        /**setOnClickListeners*/
         btnCreate.setOnClickListener(b-> register());
+        sBack.setOnClickListener(b->{
+            getFragmentManager().beginTransaction().remove(SignUp.this).commitAllowingStateLoss();
+        });
 
         return v;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        FragmentManager fm = getFragmentManager();
-        TextView sBack = view.findViewById(R.id.go_to_sin);
-        sBack.setOnClickListener(b->{
-            getFragmentManager().beginTransaction().remove(SignUp.this).commitAllowingStateLoss();
-        });
-    }
+    /**
+     * created methods
+     * */
 
-    //METHODS
     private void register() {
         String email = getEmailforRegister();
         String pass = getPass();
@@ -225,12 +208,11 @@ public class SignUp extends Fragment  {
     }
 
     private String getType() {
-        String type = etType.getText().toString();
+        String type = etType.getSelectedItem().toString();
 
         if (type.equalsIgnoreCase(getString(R.string.barber)) || type.equalsIgnoreCase(getString(R.string.client))) {
             return type;
         }else {
-            etType.setError("Not valid!");
             return null;
         }
     }
@@ -255,7 +237,7 @@ public class SignUp extends Fragment  {
 
     }
 
-    ProgressDialog progressDialog;
+
     private void showProgress(){
         if (progressDialog == null){
             progressDialog = new ProgressDialog(getContext());

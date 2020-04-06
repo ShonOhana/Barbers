@@ -1,4 +1,4 @@
-package com.example.barbers;
+package com.example.barbers.queues;
 
 
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.barbers.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +27,10 @@ import java.util.Calendar;
  */
 public class QueuesFragment extends Fragment {
 
+    //property
     private MaterialCalendarView mtv;
 
-
+    //empty constructor
     public QueuesFragment() {
         // Required empty public constructor
     }
@@ -39,22 +41,33 @@ public class QueuesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_queues, container, false);
-        mtv = v.findViewById(R.id.the_Calender);
-        setCalendar(mtv);
+        /**find view's by id's*/
+        //local variables
+        Button back = v.findViewById(R.id.btn_back);
 
+        //class variables
+        mtv = v.findViewById(R.id.the_Calender);
+
+        //firebase relationship
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Constants.USERPATH).child(Constants.BARBERPATH).child(fUser.getUid());
 
-        Button back = v.findViewById(R.id.btn_back);
 
+        /**setOnClickListeners*/
         back.setOnClickListener(b->{
             Navigation.findNavController(v).navigate(R.id.action_queuesFragment_to_costumerHomeFragment);
         });
 
+        /**class methods calls*/
+        setCalendar(mtv);
         bookOnCalander(v);
 
         return v;
     }
+
+    /**
+     * created methods
+     * */
 
     private void bookOnCalander(View v){
         Bundle args = getArguments();
@@ -77,7 +90,6 @@ public class QueuesFragment extends Fragment {
         mtv.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setMinimumDate(CalendarDay.from(2020, 2, 1))
-//                .setMaximumDate(CalendarDay.from(2030, 5, 12))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
     }

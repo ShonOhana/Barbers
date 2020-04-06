@@ -3,7 +3,6 @@ package com.example.barbers.login.register;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -33,9 +32,12 @@ import java.util.regex.Pattern;
  */
 public class LoginFragment extends DialogFragment {
 
+    //properties
     private EditText etMail;
     private EditText etPass;
-    //property we put in a success listener for login.
+    private ProgressDialog progressDialog;
+
+    //properties for the class build methods
     private OnSuccessListener<AuthResult> mSuccessListener = new OnSuccessListener<AuthResult>() {
         @Override
         public void onSuccess(AuthResult authResult) {
@@ -49,7 +51,6 @@ public class LoginFragment extends DialogFragment {
             if (getActivity() != null) getActivity().finish();
         }
     };
-
     private OnFailureListener mFailureListener = new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
@@ -60,6 +61,7 @@ public class LoginFragment extends DialogFragment {
         }
     };
 
+    //empty constructor
     public LoginFragment(){}
 
 
@@ -69,24 +71,30 @@ public class LoginFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Button btnLogin = v.findViewById(R.id.sin1);
+        /**find view's by id's*/
+        //class variables
         etMail = v.findViewById(R.id.Email);
         etPass = v.findViewById(R.id.pswrd);
+
+        //local variables
+        Button btnLogin = v.findViewById(R.id.sin1);
         TextView sBack = v.findViewById(R.id.go_to_sup);
 
-        FragmentManager fm = getFragmentManager();
+        /**setOnClickListeners*/
         btnLogin.setOnClickListener(b->{login();});
+        FragmentManager fm = getFragmentManager();
         sBack.setOnClickListener(b->{
             if (fm!=null) fm.beginTransaction().replace(R.id.cl_login, new SignUp()).commit();
         });
 
 
-
         return v;
     }
 
-    //METHODS
-    private ProgressDialog progressDialog; // property for the show progress method
+    /**
+     * created methods
+     * */
+
     // that method create new progress bar in use.
     private void showProgress(){
         if (progressDialog == null){
@@ -135,26 +143,11 @@ public class LoginFragment extends DialogFragment {
     }
 
     private void showError(Exception e) {
-        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage(e.getLocalizedMessage()) //message for auth problem
-                .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        new AlertDialog.Builder(getContext()).setTitle("Error").
+                setMessage(e.getLocalizedMessage()) //message for auth problem
+                .setPositiveButton("Dismiss", (dialog, which) -> {
 
-                    }
                 }).show();
-    }
-
-
-    //need to check if the user exist in the system / full name is enought
-    private String getUserName() {
-        String userName = etMail.getText().toString();
-
-        if (userName.length() < 4 ) {
-            etMail.setError("Not valid! must contain at least 4 characters");
-            return null;
-        }
-
-        return userName;
     }
 
 }

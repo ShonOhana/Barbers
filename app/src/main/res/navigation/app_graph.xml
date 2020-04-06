@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/queuesFragment"
-        android:name="com.example.barbers.QueuesFragment"
+        android:name="com.example.barbers.queues.QueuesFragment"
         android:label="fragment_queues"
         tools:layout="@layout/fragment_queues" >
         <action
@@ -97,7 +97,7 @@
     </fragment>
     <fragment
         android:id="@+id/queuesTestFragment2"
-        android:name="com.example.barbers.queuesTestFragment"
+        android:name="com.example.barbers.queues.queuesTestFragment"
         android:label="fragment_queues_test"
         tools:layout="@layout/fragment_queues_test" >
         <action
@@ -106,7 +106,7 @@
     </fragment>
     <fragment
         android:id="@+id/gallerryFragment"
-        android:name="com.example.barbers.GallerryFragment"
+        android:name="com.example.barbers.gallery.GallerryFragment"
         android:label="fragment_gallerry"
         tools:layout="@layout/fragment_gallerry" >
         <action
@@ -121,17 +121,8 @@
         <action
             android:id="@+id/action_gallerryFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/barberForClientsRecyleFragment"
-        android:name="com.example.barbers.barbers.BarberForClientsRecyleFragment"
-        android:label="fragment_barber_for_clients_recyle"
-        tools:layout="@layout/fragment_barber_for_clients_recyle" >
         <action
-            android:id="@+id/action_barberForClientsRecyleFragment_to_gallerryFragment"
-            app:destination="@id/gallerryFragment" />
-        <action
-            android:id="@+id/action_barberForClientsRecyleFragment_to_costumerHomeFragment"
+            android:id="@+id/action_gallerryFragment_to_costumerHomeFragment"
             app:destination="@id/costumerHomeFragment" />
     </fragment>
     <dialog
@@ -163,6 +154,9 @@
         <action
             android:id="@+id/action_blankFragment_to_gallerryFragment"
             app:destination="@id/gallerryFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_barberHomeFragment"
+            app:destination="@id/barberHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/scheduleForBarberFragment"
@@ -175,7 +169,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.barbers.SearchFragment"
+        android:name="com.example.barbers.clients.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -187,12 +181,22 @@
         <action
             android:id="@+id/action_searchFragment_to_barberHomeFragment"
             app:destination="@id/barberHomeFragment" />
+        <action
+            android:id="@+id/action_searchFragment_self"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_clientGalleryFragment"
+            app:destination="@id/clientGalleryFragment" />
     </fragment>
     <fragment
         android:id="@+id/clientGalleryFragment"
-        android:name="com.example.barbers.ClientGalleryFragment"
+        android:name="com.example.barbers.gallery.ClientGalleryFragment"
         android:label="fragment_client_gallery"
-        tools:layout="@layout/fragment_client_gallery" />
+        tools:layout="@layout/fragment_client_gallery" >
+        <action
+            android:id="@+id/action_clientGalleryFragment_to_costumerHomeFragment"
+            app:destination="@id/costumerHomeFragment" />
+    </fragment>
 
 
 </navigation>

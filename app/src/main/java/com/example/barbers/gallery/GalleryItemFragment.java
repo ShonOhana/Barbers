@@ -1,4 +1,4 @@
-package com.example.barbers;
+package com.example.barbers.gallery;
 
 
 import android.os.Bundle;
@@ -6,13 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.barbers.queues.Constants;
+import com.example.barbers.convinience.FirebaseViewHolder;
+import com.example.barbers.R;
 import com.example.barbers.java.Barber;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -63,10 +65,6 @@ public class GalleryItemFragment extends Fragment {
             protected void onBindViewHolder(@NonNull FirebaseViewHolder holder, int position, @NonNull Barber model) {
 
                 ImageView gallery = holder.itemView.findViewById(R.id.iv_gallery_item);
-                ImageView like = holder.itemView.findViewById(R.id.like_Button);
-                TextView the_likers = holder.itemView.findViewById(R.id.tv_likers);
-
-
                 Picasso.get().load(model.getImg()).into(gallery);
 
             }

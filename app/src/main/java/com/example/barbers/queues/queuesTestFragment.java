@@ -1,4 +1,4 @@
-package com.example.barbers;
+package com.example.barbers.queues;
 
 
 import android.content.DialogInterface;
@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.barbers.R;
 import com.example.barbers.java.Barber;
 import com.example.barbers.java.Client;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,20 +37,19 @@ import java.util.ArrayList;
  */
 public class queuesTestFragment extends Fragment {
 
-    SwipeRefreshLayout swipeRefreshLayout;
-    DatabaseReference ref;
-    FirebaseUser fUser;
-    ArrayList<String> queues;
-    boolean isBooked = false;
-    String fixedDate;
-    Bundle args ;
-    String UserName;
-    DatabaseReference userRef;
-    String hour;
-    Button btn_back;
-    int booked =0;
+    //properties
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private DatabaseReference ref;
+    private FirebaseUser fUser;
+    private ArrayList<String> queues;
+    private boolean isBooked = false;
+    private String fixedDate;
+    private Bundle args ;
+    private String UserName;
+    private DatabaseReference userRef;
+    private int booked =0;
 
-
+    //empty constructor
     public queuesTestFragment() {
         // Required empty public constructor
     }
@@ -58,15 +58,28 @@ public class queuesTestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        args = getArguments();
         View v = inflater.inflate(R.layout.fragment_queues_test, container, false);
-        btn_back = v.findViewById(R.id.btn_back);
+
+        /**find view's by id's*/
+        //local variables
+        Button btn_back = v.findViewById(R.id.btn_back);
+
+        //class variables
         swipeRefreshLayout = v.findViewById(R.id.swipe);
+
+        /**setOnClickListeners*/
         btn_back.setOnClickListener(b->{
             Navigation.findNavController(v).navigate(R.id.action_queuesTestFragment2_to_queuesFragment,args);
         });
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            (new Handler()).postDelayed(() -> {
+                swipeRefreshLayout.setRefreshing(false);
+            },1000);
+        });
 
+
+        //firebase relationship
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         args = getArguments();
         userRef = FirebaseDatabase.getInstance().getReference().child("users/clients").child(fUser.getUid());
@@ -85,6 +98,8 @@ public class queuesTestFragment extends Fragment {
 
             }
         });
+
+        //pass thr info by bundle
         if (args!=null) {
             ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(args.getString("barberId"));
             String date = args.getString("date");
@@ -111,16 +126,79 @@ public class queuesTestFragment extends Fragment {
             }
         }
 
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            swipeRefreshLayout.setRefreshing(true);
-            (new Handler()).postDelayed(() -> {
-                swipeRefreshLayout.setRefreshing(false);
-                //todo:find out what we need to refresh
-            },2000);
-        });
         return v;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextView title = view.findViewById(R.id.date_buttons);
+
+        args = getArguments();
+        if (args!= null) {
+            String date = getArguments().getString("date");
+            String dayB = getArguments().getString("day");
+            title.setText(dayB + " "+ fixedDate);
+            fUser = FirebaseAuth.getInstance().getCurrentUser();
+            ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(args.getString("barberId"));
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Barber b = dataSnapshot.getValue(Barber.class);
+                    if (b.getQueues() != null) {
+                        queues = b.getQueues();
+                        for (int k = 0; k < Constants.BUTTONS.length; k++) {
+                            Button button = view.findViewById(Constants.BUTTONS[k]);
+                            for (int i = 0; i < queues.size(); i++) {
+                                if (queues.get(i).substring(0, queues.get(i).indexOf("0 ") + 1).equals(fixedDate + ": " + dayB + " - " + button.getText())) {
+                                    String name = queues.get(i).substring(queues.get(i).indexOf("0 ") + 3).trim();
+                                    button.setText(name);
+                                    booked = 1;
+                                    button.setBackgroundResource(R.drawable.queues_btn_clicked);
+                                    button.setOnClickListener(v -> {
+
+                                        if (button.getText().toString().equalsIgnoreCase(UserName)){
+                                            if (getContext()!=null){
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                                builder.setTitle(getString(R.string.cancelll)).setPositiveButton((getString(R.string.yes)), new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                        CancelBook(button, args);
+                                                    }
+                                                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                }).show();
+                                            }
+
+                                        }
+                                        else Toast.makeText(getContext(), R.string.appointment_is_booked, Toast.LENGTH_SHORT).show();
+
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+    }
+
+    /**
+     * created methods
+     * */
     private void CancelBook(Button btn, Bundle args) {
 
         userRef = FirebaseDatabase.getInstance().getReference().child("users/clients").child(fUser.getUid());
@@ -175,80 +253,16 @@ public class queuesTestFragment extends Fragment {
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        TextView title = view.findViewById(R.id.date_buttons);
-
-        args = getArguments();
-        if (args!= null) {
-            String date = getArguments().getString("date");
-            String dayB = getArguments().getString("day");
-            title.setText(dayB + " "+ fixedDate);
-            fUser = FirebaseAuth.getInstance().getCurrentUser();
-            ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(args.getString("barberId"));
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Barber b = dataSnapshot.getValue(Barber.class);
-                    if (b.getQueues() != null) {
-                        queues = b.getQueues();
-                        for (int k = 0; k < Constants.BUTTONS.length; k++) {
-                            Button button = view.findViewById(Constants.BUTTONS[k]);
-                            for (int i = 0; i < queues.size(); i++) {
-                                if (queues.get(i).substring(0, queues.get(i).indexOf("0 ") + 1).equals(fixedDate + ": " + dayB + " - " + button.getText())) {
-                                    String name = queues.get(i).substring(queues.get(i).indexOf("0 ") + 3).trim();
-                                    button.setText(name);
-                                    button.setBackgroundResource(R.drawable.queues_btn_clicked);
-                                    button.setOnClickListener(v -> {
-
-                                        if (button.getText().toString().equalsIgnoreCase(UserName)){
-                                            if (getContext()!=null){
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                                builder.setTitle("are you sure you want to cancel this appointment?").setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                        CancelBook(button, args);
-                                                    }
-                                                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                }).show();
-                                            }
-
-                                        }
-                                        else Toast.makeText(getContext(), "appointment is already booked", Toast.LENGTH_SHORT).show();
-
-                                    });
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
-        }
-    }
 
     private void BookBtn(String date, String dayB, Button button) {
         if (booked == 1) {
-            Toast.makeText(getContext(), "cant book more than one appointment a day \n\n cancel your booking or book another day", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.more_then_day, Toast.LENGTH_LONG).show();
 
         }else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setMessage("Do you want to book an appointment on \n" + dayB + " " + date.toString().substring(1 + date.toString().indexOf("{"), (date.toString().indexOf("}"))) + " at " + button.getText()).
-                    setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            builder.setMessage(getString(R.string.appointment_ok) + dayB + " " + date.toString().substring(1 + date.toString().indexOf("{"), (date.toString().indexOf("}"))) + " at " + button.getText()).
+                    setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -260,7 +274,7 @@ public class queuesTestFragment extends Fragment {
                                     if (queues == null) {
                                         queues = new ArrayList<>();
                                         queues.add("queues");
-                                        barber = new Barber(barber.getBarberID(), barber.getFullName(), barber.getPassword(), barber.getPhone(), barber.getEmail(), barber.getUsername(), barber.getAddress(), barber.getBarbershop(), barber.getDescription(), barber.getImg(),barber.getGallery(), queues, barber.getPriority());
+                                        barber.setQueues(queues);
                                     }
 
                                     for (int i = 0; i < queues.size(); i++) {
@@ -273,16 +287,20 @@ public class queuesTestFragment extends Fragment {
                                     if (isBooked) {
 
 
-                                        Toast.makeText(getContext(), "the appointment is occupied", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), R.string.appointment_occupid, Toast.LENGTH_SHORT).show();
                                     } else {
-                                        queues.add(fixedDate + ": " + dayB + " - " + button.getText() + " - " + args.getString("userName"));
+                                        if (barber.getQueues().get(0).equals(queues)) {
+                                            queues.set(0, fixedDate + ": " + dayB + " - " + button.getText() + " - " + args.getString("userName"));
+                                        } else {
+                                            queues.add(fixedDate + ": " + dayB + " - " + button.getText() + " - " + args.getString("userName"));
+                                        }
 
-
-                                        Barber brbQ = new Barber(barber.getBarberID(), barber.getFullName(), barber.getPassword(), barber.getPhone(), barber.getEmail(), barber.getUsername(), barber.getAddress(), barber.getBarbershop(), barber.getDescription(), barber.getImg(),barber.getGallery(), queues, barber.getPriority());
-
-                                        ref.setValue(brbQ);
-                                        booked = 1;
                                     }
+                                        barber.setQueues(queues);
+
+                                        ref.setValue(barber);
+                                        booked = 1;
+
                                 }
 
                                 @Override
@@ -291,12 +309,7 @@ public class queuesTestFragment extends Fragment {
                                 }
                             });
                         }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+                    }).setNegativeButton("No", (dialog, which) -> dialog.dismiss());
             builder.show();
         }
     }

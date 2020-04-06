@@ -33,6 +33,7 @@
             android:layout_marginStart="8dp"
             android:ems="10"
             android:hint="@string/search"
+            android:imeOptions="actionSearch"
             android:inputType="textPersonName"
             android:textColor="#ffffff"
 
@@ -42,12 +43,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <Button
             android:id="@+id/fab_search"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="24dp"
-            android:src="@drawable/ic_search_black_24dp"
+            android:visibility="invisible"
+            android:background="@drawable/ic_search_black_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_logout"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +74,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/chewy"
-            android:text="name name"
+            android:text="Barbers"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -80,6 +82,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

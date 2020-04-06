@@ -5,16 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/ques"
-    android:background="@drawable/deck"
-    tools:context=".QueuesFragment">
+    android:background="@drawable/barber_queues2"
+    tools:context=".queues.QueuesFragment">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/blue"
-        android:alpha="0.15">
 
-    </FrameLayout>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/the_Calender"
@@ -51,7 +45,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/queues_btn_clicked"
-        android:text="back"
+        android:text="@string/back"
         android:textColor="#ffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

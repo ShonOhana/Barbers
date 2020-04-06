@@ -1,6 +1,7 @@
 package com.example.barbers.barbers;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.navigation.Navigation;
 
 import com.example.barbers.R;
 import com.example.barbers.java.Barber;
+import com.example.barbers.java.Queues;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,21 +24,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ScheduleForBarberFragment extends Fragment {
 
+    //properties
+    private TextView barbers_queues;
+    private ArrayList<String> queues;
+    private StringBuilder queuesList;
+    private FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+    private ArrayList<Queues> arrangeQ = new ArrayList<>();
+    private ArrayList<String> currentQ = new ArrayList<>();
 
-
-    TextView barbers_queues;
-    ArrayList<String> queues;
-    StringBuilder queuesList;
-    DatabaseReference ref;
-    FirebaseUser fUser;
-
+    //empty constructor
     public ScheduleForBarberFragment() {
         // Required empty public constructor
     }
@@ -46,38 +51,91 @@ public class ScheduleForBarberFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View  v =  inflater.inflate(R.layout.fragment_schedule_for_barber, container, false);
+        View v = inflater.inflate(R.layout.fragment_schedule_for_barber, container, false);
 
-        fUser = FirebaseAuth.getInstance().getCurrentUser();
-        ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(fUser.getUid());
+        /**find view's by id's*/
+        //local variables
+        Button back = v.findViewById(R.id.btn_back);
 
-        queuesList= new StringBuilder();
+        //class variables
+        queuesList = new StringBuilder();
         barbers_queues = v.findViewById(R.id.barbers_queues);
 
-        Button back = v.findViewById(R.id.btn_back);
-        back.setOnClickListener(b->{
+
+        /**setOnClickListeners*/
+        back.setOnClickListener(b -> {
             Navigation.findNavController(v).navigate(R.id.action_scheduleForBarberFragment_to_barberHomeFragment);
         });
 
+        //FireBase relationship
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child("barbers").child(fUser.getUid());
 
-        ref.addValueEventListener(new ValueEventListener() {
+        getAllQueues(ref);
+
+
+        return v;
+    }
+
+
+    private void getAllQueues(DatabaseReference ref) {
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Barber barber = dataSnapshot.getValue(Barber.class);
-                    if (barber.getQueues()!=null) {
-                        queues = barber.getQueues();
+                    if (barber != null) {
+                        if (barber.getQueues().size() > 0) {
+                            if (barber.getQueues().get(0).equals("queues")){
+                                queuesList.append("No queues yet");
+                            }else {
+                                if (queuesList.equals(new StringBuilder("No queues yet"))) {
+                                    queuesList.delete(0, queuesList.length() - 1);
+                                } else {
+                                    currentQ = barber.getQueues();
+                                    for (int i = 0; i < barber.getQueues().size(); i++) {
+                                        //get date by subsring from que on DB
+                                        String date = currentQ.get(i).substring(0, currentQ.get(i).indexOf(":"));
+                                        StringBuilder stDate = new StringBuilder(date);
+                                        //make month of que 2 digits
+                                        stDate.insert(5, 0);
+                                        System.out.println(date + " Date");
+                                        //if stDate length is 9 it means the day is 1 digit
+                                        if (stDate.length() == 9)
+                                            stDate.insert(stDate.length() - 1, 0);
+                                        System.out.println(stDate);
+                                        String day = null;
+                                        //check build version so we can apply localDate
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                            day = LocalDate.parse(stDate).getDayOfWeek().toString();
+                                        }
+                                        // get hour by substring from que on DB
+                                        String hour = currentQ.get(i).substring(currentQ.get(i).indexOf("Y - ") + 4, currentQ.get(i).indexOf("0 ") + 1);
+                                        // get name by substring from que on DB
+                                        String name = currentQ.get(i).substring(currentQ.get(i).indexOf("0 - ") + 4);
 
-                        System.out.println(queues + "  queues" );
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-                        for (int i = 0; i < queues.size(); i++) {
-                            queuesList.append(queues.get(i)).append("\n\n");
+                                            arrangeQ.add(new Queues(LocalDate.parse(stDate), day, hour, name));
+                                        }
 
-                            System.out.println(queuesList + "    QUEUESS");
+
+                                    }
+                                    //sort ques
+                                    Collections.sort(arrangeQ);
+                                }
+                            }
+                        }
+                        for (Queues que : arrangeQ) {
+                            queuesList.append(que.getDate()).append(": ").append(que.getDay()).
+                                    append(" - ").append(que.getHour()).
+                                    append(" - ").append(que.getName()).append("\n\n");
+
                         }
 
-                        barbers_queues.setText(queuesList.toString());
+                        barbers_queues.setText(queuesList);
                     }
+
                 }
 
             }
@@ -89,6 +147,5 @@ public class ScheduleForBarberFragment extends Fragment {
         });
 
 
-        return v;
     }
 }

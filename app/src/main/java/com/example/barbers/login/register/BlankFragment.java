@@ -4,10 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -24,7 +22,7 @@ import static com.example.barbers.R.id.nav_host_fragment;
 
 public class BlankFragment extends Fragment {
 
-
+    //constructor
     public BlankFragment() {
         // Required empty public constructor
     }
@@ -36,22 +34,14 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
 
-        Button logout = view.findViewById(R.id.logout);
-        logout.setOnClickListener(b->{
-            FirebaseAuth.getInstance().signOut();
-        });
+        /**class methods calls*/
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null) navigateToUserType();
 
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null) navigateToUserType();
-    }
-
-
+    /**created methods*/
+    //navigate this loading page to the barber page / client page
     private void navigateToUserType (){
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -64,7 +54,7 @@ public class BlankFragment extends Fragment {
                         try {
 
                             if (child.child(uid).getValue() != null) {//
-                                Navigation.findNavController(getActivity(), nav_host_fragment).navigate(R.id.action_blankFragment_to_gallerryFragment);
+                                Navigation.findNavController(getActivity(), nav_host_fragment).navigate(R.id.action_blankFragment_to_barberHomeFragment);
 
                             } else {
                                 Bundle args = new Bundle();

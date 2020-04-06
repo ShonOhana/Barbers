@@ -11,9 +11,7 @@ import com.example.barbers.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextView signIn;
-    private TextView signUp;
-    private LinearLayout circle;
+
 
 
     @Override
@@ -21,23 +19,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        signIn = findViewById(R.id.sign_in);
-        signUp = findViewById(R.id.signupforfree);
-        circle = findViewById(R.id.circle);
+        /**find view's by id's*/
+        //local variables
+        TextView signIn = findViewById(R.id.sign_in);
+        TextView signUp = findViewById(R.id.signupforfree);
+        LinearLayout circle = findViewById(R.id.circle);
 
+        /**setOnClickListeners*/
         signIn.setOnClickListener(v->{
             circle.setVisibility(View.INVISIBLE);
             signIn.setVisibility(View.INVISIBLE);
             getSupportFragmentManager().beginTransaction().replace(R.id.cl_entry,new LoginFragment()).commit();
 
         });
-
         signUp.setOnClickListener(v->{
             getSupportFragmentManager().beginTransaction().replace(R.id.cl_entry,new SignUp()).commit();
         });
 
-
     }
-
 
 }

@@ -5,7 +5,8 @@
     android:id="@+id/cl_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.register.LoginFragment">
+    tools:context=".login.register.LoginFragment"
+    android:background="@drawable/man_and_women_fade">
 
 
     <TextView

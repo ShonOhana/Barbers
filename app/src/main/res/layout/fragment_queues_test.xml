@@ -4,17 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/deck"
-    tools:context="queuesTestFragment">
+    android:background="@drawable/barber_queues2"
+    tools:context=".queues.queuesTestFragment">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/blue"
-        android:alpha="0.15">
-
-    </FrameLayout>
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/swipe">
@@ -402,7 +395,7 @@
                 android:layout_marginTop="48dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/aldrich"
-                android:text="please choose an available hour"
+                android:text="@string/please_choose_an_available_hour"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="16dp"
